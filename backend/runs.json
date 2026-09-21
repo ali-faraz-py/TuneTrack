@@ -1,0 +1,29 @@
+[
+  {
+    "run_id": 1,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 16,
+    "max_steps": 60,
+    "final_loss": 1.124084,
+    "training_seconds": 136.2,
+    "peak_memory_gb": 3.05
+  },
+  {
+    "run_id": 2,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 32,
+    "max_steps": 60,
+    "final_loss": 1.132879,
+    "training_seconds": 159.4,
+    "peak_memory_gb": 5.62
+  },
+  {
+    "run_id": 3,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 16,
+    "max_steps": 100,
+    "final_loss": 0.0023,
+    "training_seconds": 228.1,
+    "peak_memory_gb": null
+  }
+]
