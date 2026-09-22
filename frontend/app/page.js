@@ -75,10 +75,10 @@ export default function Home() {
             to keep a record of what happened each time I changed a setting.
           </p>
           <p className="text-[var(--text-dim)]">
-            This page is that record. Nothing here is staged — one of the
-            three runs below is a genuine mistake I made (training too long on
+            This page is that record. Nothing here is staged, one of the
+            runs below is a genuine mistake I made (training too long on
             too little data), and I&apos;ve left it in because it&apos;s the
-            most useful one.
+            most useful one. There are {runs.length} runs logged so far.
           </p>
         </section>
 
