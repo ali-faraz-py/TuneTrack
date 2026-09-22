@@ -13,7 +13,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/runs")
+    fetch("https://tunetrack-1cs0.onrender.com/runs")
       .then((res) => res.json())
       .then((data) => setRuns(data));
   }, []);
