@@ -6,7 +6,8 @@
     "max_steps": 60,
     "final_loss": 1.124084,
     "training_seconds": 136.2,
-    "peak_memory_gb": 3.05
+    "peak_memory_gb": 3.05,
+    "note": "First real attempt, using the tutorial's default settings. This became the baseline I compared every later run against."
   },
   {
     "run_id": 2,
@@ -15,7 +16,8 @@
     "max_steps": 60,
     "final_loss": 1.132879,
     "training_seconds": 159.4,
-    "peak_memory_gb": 5.62
+    "peak_memory_gb": 5.62,
+    "note": "Doubled the LoRA rank from run_01 to see if more capacity would help. It didn't, the loss barely moved and it just used almost double the GPU memory."
   },
   {
     "run_id": 3,
@@ -24,6 +26,7 @@
     "max_steps": 100,
     "final_loss": 0.0023,
     "training_seconds": 228.1,
-    "peak_memory_gb": null
+    "peak_memory_gb": null,
+    "note": "Pushed training steps from 60 to 100 on only 56 examples. The loss dropped to almost zero, which looked amazing until I realized it just meant the model memorized my questions instead of learning general patterns from them."
   }
 ]
