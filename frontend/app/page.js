@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [runs, setRuns] = useState([]);
   const [theme, setTheme] = useState("dark");
+  const [openNotes, setOpenNotes] = useState({});
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") || "dark";
@@ -24,6 +25,10 @@ export default function Home() {
     localStorage.setItem("theme", next);
   }
 
+  function toggleNote(id) {
+    setOpenNotes((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
   const maxLoss = runs.length ? Math.max(...runs.map((r) => r.final_loss)) : 1;
 
   function getBadge(run) {
@@ -33,7 +38,7 @@ export default function Home() {
       : null;
 
     if (run.final_loss < 0.05) {
-      return { label: "Overfit — memorized the data", tone: "warn" };
+      return { label: "Overfit (memorized the data)", tone: "warn" };
     }
     if (run.final_loss === minReasonable) {
       return { label: "Best result", tone: "good" };
@@ -65,20 +70,22 @@ export default function Home() {
         {/* Intro */}
         <section className="mb-12 leading-relaxed text-[15px] text-[var(--text)]">
           <p className="mb-4">
-            I wanted to actually learn how LLM fine-tuning works, not just read
-            about it. So I took a small open model (Llama 3.2, 3B), trained it
-            with LoRA on a free Colab GPU using a handful of Q&amp;A pairs
-            pulled from one of my own projects, and used{" "}
+            I wanted to actually learn how LLM fine-tuning works, not just
+            read about it. So I took a small open model (Llama 3.2, 3B),
+            trained it with LoRA on a free Colab GPU using a handful of
+            Q&amp;A pairs pulled from one of my own projects, and used{" "}
             <span className="font-[family-name:var(--font-mono)] text-[13px] bg-[var(--accent-soft)] text-[var(--accent)] px-1.5 py-0.5 rounded">
               MLflow
             </span>{" "}
             to keep a record of what happened each time I changed a setting.
           </p>
           <p className="text-[var(--text-dim)]">
-            This page is that record. Nothing here is staged, one of the
-            runs below is a genuine mistake I made (training too long on
-            too little data), and I&apos;ve left it in because it&apos;s the
-            most useful one. There are {runs.length} runs logged so far.
+            This page is that record, updated every time I run a new
+            experiment. Nothing here is staged. There
+            {runs.length === 1 ? " is " : " are "}
+            {runs.length} {runs.length === 1 ? "run" : "runs"} logged so far,
+            and each one has a short note explaining what I was testing and
+            what actually happened.
           </p>
         </section>
 
@@ -90,6 +97,7 @@ export default function Home() {
           <div className="space-y-3">
             {runs.map((run) => {
               const badge = getBadge(run);
+              const isOpen = !!openNotes[run.run_id];
               const toneMap = {
                 good: "text-[var(--good)] bg-[var(--good-soft)]",
                 warn: "text-[var(--warn)] bg-[var(--warn-soft)]",
@@ -119,7 +127,7 @@ export default function Home() {
                     <Stat label="time" value={`${run.training_seconds}s`} />
                   </div>
 
-                  <div className="h-1.5 bg-[var(--accent-soft)] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[var(--accent-soft)] rounded-full overflow-hidden mb-4">
                     <div
                       className="h-full rounded-full"
                       style={{
@@ -131,35 +139,31 @@ export default function Home() {
                       }}
                     />
                   </div>
+
+                  {run.note && (
+                    <div>
+                      <button
+                        onClick={() => toggleNote(run.run_id)}
+                        className="text-xs font-medium text-[var(--accent)] hover:opacity-80 transition-opacity"
+                      >
+                        {isOpen ? "Hide notes" : "Read notes"}
+                      </button>
+                      {isOpen && (
+                        <p className="text-sm text-[var(--text-dim)] leading-relaxed mt-2 pl-3 border-l-2 border-[var(--border)]">
+                          {run.note}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}
           </div>
         </section>
 
-        {/* What I learned */}
-        <section className="mb-12 border-l-2 border-[var(--accent)] pl-5">
-          <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)] mb-3">
-            What I actually learned from this
-          </h2>
-          <p className="text-[15px] leading-relaxed mb-3">
-            Doubling the LoRA rank (16 → 32) barely changed the result but
-            used almost twice the GPU memory — more capacity didn&apos;t help
-            on a dataset this small.
-          </p>
-          <p className="text-[15px] leading-relaxed text-[var(--text-dim)]">
-            The bigger lesson was run_03. I pushed training steps from 60 to
-            100 on only 56 examples, and the loss dropped almost to zero. That
-            looks great until you realize what it means: the model
-            wasn&apos;t learning general patterns anymore, it just memorized
-            my 56 questions word for word. A real dataset for this would need
-            to be a lot bigger before more training steps actually help.
-          </p>
-        </section>
-
         <footer className="text-xs text-[var(--text-dim)] pt-6 border-t border-[var(--border)]">
-          Built by Syed Ali Faraz · fine-tuned with Unsloth + LoRA · tracked
-          with MLflow
+          Built by Syed Ali Faraz. Fine-tuned with Unsloth and LoRA, tracked
+          with MLflow.
         </footer>
       </div>
     </main>
