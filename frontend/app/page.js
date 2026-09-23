@@ -1,10 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 
 export default function Home() {
   const [runs, setRuns] = useState([]);
   const [theme, setTheme] = useState("dark");
   const [openNotes, setOpenNotes] = useState({});
+  const [visibleCount, setVisibleCount] = useState(5);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") || "dark";
@@ -46,6 +56,17 @@ export default function Home() {
     return { label: "Baseline", tone: "neutral" };
   }
 
+  const chartData = runs.map((r) => ({
+    name: `run_${r.run_id.toString().padStart(2, "0")}`,
+    loss: r.final_loss,
+  }));
+
+  const runsNewestFirst = [...runs].reverse();
+  const visibleRuns =
+    visibleCount === "all"
+      ? runsNewestFirst
+      : runsNewestFirst.slice(0, visibleCount);
+
   return (
     <main className="min-h-screen bg-[var(--bg)] text-[var(--text)] px-6 py-10 sm:px-10 md:px-16">
       <div className="max-w-3xl mx-auto">
@@ -59,12 +80,22 @@ export default function Home() {
               a small log of fine-tuning experiments
             </p>
           </div>
-          <button
-            onClick={toggleTheme}
-            className="text-sm border border-[var(--border)] rounded-full px-3 py-1.5 text-[var(--text-dim)] hover:text-[var(--text)] hover:border-[var(--text-dim)] transition-colors"
-          >
-            {theme === "dark" ? "☀ light" : "☾ dark"}
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href="https://github.com/ali-faraz-py/TuneTrack"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm border border-[var(--border)] rounded-full px-3 py-1.5 text-[var(--text-dim)] hover:text-[var(--text)] hover:border-[var(--text-dim)] transition-colors"
+            >
+              GitHub
+            </a>
+            <button
+              onClick={toggleTheme}
+              className="text-sm border border-[var(--border)] rounded-full px-3 py-1.5 text-[var(--text-dim)] hover:text-[var(--text)] hover:border-[var(--text-dim)] transition-colors"
+            >
+              {theme === "dark" ? "☀ light" : "☾ dark"}
+            </button>
+          </div>
         </div>
 
         {/* Intro */}
@@ -89,13 +120,80 @@ export default function Home() {
           </p>
         </section>
 
+        {/* Loss trend chart */}
+        {runs.length > 0 && (
+          <section className="mb-12">
+            <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)] mb-4">
+              Loss across runs
+            </h2>
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg p-5">
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={chartData}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="var(--border)"
+                  />
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fill: "var(--text-dim)", fontSize: 11 }}
+                    axisLine={{ stroke: "var(--border)" }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={{ fill: "var(--text-dim)", fontSize: 11 }}
+                    axisLine={{ stroke: "var(--border)" }}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--bg-card)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "8px",
+                      fontSize: "13px",
+                    }}
+                    labelStyle={{ color: "var(--text)" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="loss"
+                    stroke="var(--accent)"
+                    strokeWidth={2}
+                    dot={{ r: 3, fill: "var(--accent)" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <p className="text-xs text-[var(--text-dim)] mt-2">
+              A sudden drop near zero usually means overfitting, not a better
+              model. Check that run&apos;s notes before assuming lower is
+              better.
+            </p>
+          </section>
+        )}
+
         {/* Runs */}
         <section className="mb-12">
-          <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)] mb-4">
-            Runs
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)]">
+              Runs, most recent first
+            </h2>
+            {runs.length > 5 && (
+              <select
+                value={visibleCount}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setVisibleCount(val === "all" ? "all" : Number(val));
+                }}
+                className="text-xs bg-[var(--bg-card)] border border-[var(--border)] rounded-md px-2 py-1 text-[var(--text-dim)] focus:outline-none focus:border-[var(--accent)]"
+              >
+                <option value={5}>Show 5</option>
+                <option value={10}>Show 10</option>
+                <option value="all">Show all ({runs.length})</option>
+              </select>
+            )}
+          </div>
           <div className="space-y-3">
-            {runs.map((run) => {
+            {visibleRuns.map((run) => {
               const badge = getBadge(run);
               const isOpen = !!openNotes[run.run_id];
               const toneMap = {
