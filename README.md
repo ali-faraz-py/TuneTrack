@@ -13,7 +13,7 @@ free Google Colab GPU using Unsloth, and used MLflow to track what happened
 each time I changed a setting. This project is the dashboard that shows those
 results.
 
-Each run below is real. Nothing is staged, including the run where I pushed
+Each run is real. Nothing is staged, including the run where I pushed
 training steps too far and the model just memorized the data instead of
 learning from it. I left that one in on purpose, since it was the most useful
 result I got out of the whole experiment.
@@ -35,8 +35,14 @@ adjusting.
    model) and results (final loss, training time, peak GPU memory).
 3. A small **FastAPI backend** serves that run history as JSON.
 4. A **Next.js frontend** displays it, styled to look like a lab notebook
-   rather than a typical dashboard, with light/dark mode and a short written
-   note attached to each run.
+   rather than a typical dashboard. It includes:
+   - a line chart plotting loss across every run, so a trend is visible even
+     as more runs get added
+   - a 5 / 10 / all dropdown so the run list stays short and readable no
+     matter how many experiments pile up
+   - light/dark mode
+   - a short, expandable note attached to each run explaining what I was
+     testing and what actually happened
 
 ## Tech stack
 
@@ -44,7 +50,7 @@ adjusting.
   T4 GPU)
 - **Experiment tracking:** MLflow
 - **Backend:** FastAPI
-- **Frontend:** Next.js (App Router), Tailwind CSS
+- **Frontend:** Next.js (App Router), Tailwind CSS, Recharts
 - **Deployment:** Render (backend), Vercel (frontend)
 
 ## What I actually learned
@@ -81,4 +87,5 @@ The frontend expects the backend running (or update the fetch URL in
 ## Notebook
 
 The actual fine-tuning notebook (based on Unsloth's Llama 3.2 example) is
-available here: https://colab.research.google.com/drive/18DCR9jVhNQ2a5dsCn85h7Kg-lpdqYvlS?usp=sharing
+available here:
+https://colab.research.google.com/drive/18DCR9jVhNQ2a5dsCn85h7Kg-lpdqYvlS?usp=sharing
