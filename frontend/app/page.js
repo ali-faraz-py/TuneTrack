@@ -39,18 +39,17 @@ export default function Home() {
     setOpenNotes((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  const maxLoss = runs.length ? Math.max(...runs.map((r) => r.final_loss)) : 1;
+  const maxLoss = runs.length ? Math.max(...runs.map((r) => r.avg_loss)) : 1;
 
   function getBadge(run) {
-    const reasonable = runs.filter((r) => r.final_loss > 0.05);
-    const minReasonable = reasonable.length
-      ? Math.min(...reasonable.map((r) => r.final_loss))
-      : null;
-
-    if (run.final_loss < 0.05) {
+    if (run.overfit) {
       return { label: "Overfit (memorized the data)", tone: "warn" };
     }
-    if (run.final_loss === minReasonable) {
+    const notOverfit = runs.filter((r) => !r.overfit);
+    const best = notOverfit.length
+      ? Math.min(...notOverfit.map((r) => r.avg_loss))
+      : null;
+    if (run.avg_loss === best) {
       return { label: "Best result", tone: "good" };
     }
     return { label: "Baseline", tone: "neutral" };
@@ -58,7 +57,7 @@ export default function Home() {
 
   const chartData = runs.map((r) => ({
     name: `run_${r.run_id.toString().padStart(2, "0")}`,
-    loss: r.final_loss,
+    loss: r.avg_loss,
   }));
 
   const runsNewestFirst = [...runs].reverse();
@@ -124,7 +123,7 @@ export default function Home() {
         {runs.length > 0 && (
           <section className="mb-12">
             <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)] mb-4">
-              Loss across runs
+              Average loss across runs
             </h2>
             <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg p-5">
               <ResponsiveContainer width="100%" height={220}>
@@ -164,9 +163,9 @@ export default function Home() {
               </ResponsiveContainer>
             </div>
             <p className="text-xs text-[var(--text-dim)] mt-2">
-              A sudden drop near zero usually means overfitting, not a better
-              model. Check that run&apos;s notes before assuming lower is
-              better.
+              This is the loss averaged over the whole run, so it includes the
+              high early steps. A run can still be overfit if its loss at the
+              very end is near zero, so check each run&apos;s notes.
             </p>
           </section>
         )}
@@ -221,7 +220,7 @@ export default function Home() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-4 text-sm mb-4">
                     <Stat label="LoRA rank" value={run.lora_rank} />
                     <Stat label="steps" value={run.max_steps} />
-                    <Stat label="final loss" value={run.final_loss} />
+                    <Stat label="avg loss" value={run.avg_loss} />
                     <Stat label="time" value={`${run.training_seconds}s`} />
                   </div>
 
@@ -229,7 +228,7 @@ export default function Home() {
                     <div
                       className="h-full rounded-full"
                       style={{
-                        width: `${Math.max((run.final_loss / maxLoss) * 100, 2)}%`,
+                        width: `${Math.max((run.avg_loss / maxLoss) * 100, 2)}%`,
                         background:
                           badge.tone === "warn"
                             ? "var(--warn)"
