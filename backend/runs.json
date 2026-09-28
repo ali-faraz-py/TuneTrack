@@ -4,9 +4,10 @@
     "base_model": "Llama-3.2-3B",
     "lora_rank": 16,
     "max_steps": 60,
-    "final_loss": 1.124084,
+    "avg_loss": 1.124084,
     "training_seconds": 136.2,
     "peak_memory_gb": 3.05,
+    "overfit": false,
     "note": "First real attempt, using the tutorial's default settings. This became the baseline I compared every later run against."
   },
   {
@@ -14,19 +15,32 @@
     "base_model": "Llama-3.2-3B",
     "lora_rank": 32,
     "max_steps": 60,
-    "final_loss": 1.132879,
+    "avg_loss": 1.132879,
     "training_seconds": 159.4,
     "peak_memory_gb": 5.62,
-    "note": "Doubled the LoRA rank from run_01 to see if more capacity would help. It didn't, the loss barely moved and it just used almost double the GPU memory."
+    "overfit": false,
+    "note": "Doubled the LoRA rank from run_01 to see if more capacity would help. It didn't, the loss barely moved."
   },
   {
     "run_id": 3,
     "base_model": "Llama-3.2-3B",
     "lora_rank": 16,
     "max_steps": 100,
-    "final_loss": 0.0023,
+    "avg_loss": 0.621559,
     "training_seconds": 228.1,
     "peak_memory_gb": null,
-    "note": "Pushed training steps from 60 to 100 on only 56 examples. The loss dropped to almost zero, which looked amazing until I realized it just meant the model memorized my questions instead of learning general patterns from them."
+    "overfit": true,
+    "note": "Pushed training steps from 60 to 100 on only 56 examples. By the last step the loss was almost zero (0.002), which looked amazing until I realized it just meant the model memorized my questions instead of learning general patterns from them."
+  },
+  {
+    "run_id": 4,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 8,
+    "max_steps": 100,
+    "avg_loss": 0.621388,
+    "training_seconds": 218.4,
+    "peak_memory_gb": 5.305,
+    "overfit": true,
+    "note": "Same 100 steps as run_03 but with LoRA rank 8 instead of 16. The average loss came out almost identical (0.621 vs 0.622) and the last step dropped to about 0.002 again, so it memorized the 56 examples just like run_03. A smaller rank did not change the outcome."
   }
 ]
