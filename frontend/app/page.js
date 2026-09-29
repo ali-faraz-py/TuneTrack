@@ -183,12 +183,12 @@ export default function Home() {
                   const val = e.target.value;
                   setVisibleCount(val === "all" ? "all" : Number(val));
                 }}
-                className="text-xs bg-[var(--accent-soft)] border border-[var(--accent)] rounded-md pl-2 pr-6 py-1.5 text-[var(--accent)] font-medium appearance-none focus:outline-none cursor-pointer"
+                className="text-xs bg-[var(--bg-card)] border border-[var(--border)] rounded-md pl-2 pr-7 py-1 text-[var(--text-dim)] appearance-none focus:outline-none focus:border-[var(--accent)] cursor-pointer"
                 style={{
                 backgroundImage:
-                    "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23b1531f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
+                    "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236f6a5e' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
                 backgroundRepeat: "no-repeat",
-                backgroundPosition: "right 6px center",
+                backgroundPosition: "right 8px center",
                 }}
               >
                 <option value={5}>Show 5</option>
