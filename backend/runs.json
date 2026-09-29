@@ -42,5 +42,16 @@
     "peak_memory_gb": 5.305,
     "overfit": true,
     "note": "Same 100 steps as run_03 but with LoRA rank 8 instead of 16. The average loss came out almost identical (0.621 vs 0.622) and the last step dropped to about 0.002 again, so it memorized the 56 examples just like run_03. A smaller rank did not change the outcome."
+  },
+  {
+    "run_id": 5,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 8,
+    "max_steps": 60,
+    "avg_loss": 1.121548,
+    "training_seconds": 130.6,
+    "peak_memory_gb": 3.051,
+    "overfit": false,
+    "note": "Lowered the rank to 8 at 60 steps, the smallest setting tested so far. The average loss (1.1215) landed almost exactly between run_01 (rank 16) and run_02 (rank 32), so at 60 steps the rank barely changes the result."
   }
 ]
