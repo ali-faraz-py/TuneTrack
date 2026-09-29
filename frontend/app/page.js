@@ -7,9 +7,9 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  
   CartesianGrid,
 } from "recharts";
+import ScatterPlot3D from "./ScatterPlot3D";
 
 export default function Home() {
   const [runs, setRuns] = useState([]);
@@ -171,6 +171,22 @@ export default function Home() {
           </section>
         )}
 
+        {/* 3D scatter */}
+        {runs.length > 0 && (
+          <section className="mb-12">
+            <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)] mb-4">
+              Rank, steps, and loss together
+            </h2>
+            <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg p-5">
+              <ScatterPlot3D runs={runs} />
+            </div>
+            <p className="text-xs text-[var(--text-dim)] mt-2">
+              Drag to rotate, scroll to zoom. Bigger dots took longer to
+              train.
+            </p>
+          </section>
+        )}
+
         {/* Runs */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-4">
@@ -186,10 +202,10 @@ export default function Home() {
                 }}
                 className="text-xs bg-[var(--bg-card)] border border-[var(--accent)] rounded-md pl-2 pr-7 py-1 text-[var(--text-dim)] appearance-none focus:outline-none cursor-pointer"
                 style={{
-                backgroundImage:
+                  backgroundImage:
                     "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236f6a5e' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "right 8px center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 8px center",
                 }}
               >
                 <option value={5}>Show 5</option>
