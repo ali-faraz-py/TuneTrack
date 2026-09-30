@@ -171,7 +171,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* 3D scatter */}
+        {/* 3D scatter plot */}
         {runs.length > 0 && (
           <section className="mb-12">
             <h2 className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-[var(--text-dim)] mb-4">
