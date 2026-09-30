@@ -116,7 +116,9 @@ export default function Home() {
             {runs.length === 1 ? " is " : " are "}
             {runs.length} {runs.length === 1 ? "run" : "runs"} logged so far,
             and each one has a short note explaining what I was testing and
-            what actually happened.
+            what actually happened. Some runs also have a real question I
+            asked the fine-tuned model, with its actual answer, so you can
+            see it working, not just a loss number.
           </p>
         </section>
 
@@ -259,6 +261,23 @@ export default function Home() {
                       }}
                     />
                   </div>
+
+                  {run.sample_qa && (
+                    <div className="mb-4 bg-[var(--accent-soft)] rounded-md p-3 text-sm">
+                      <p className="text-[var(--text-dim)] mb-1">
+                        <span className="font-medium text-[var(--accent)]">
+                          Q:
+                        </span>{" "}
+                        {run.sample_qa.question}
+                      </p>
+                      <p className="text-[var(--text)]">
+                        <span className="font-medium text-[var(--accent)]">
+                          A:
+                        </span>{" "}
+                        {run.sample_qa.answer}
+                      </p>
+                    </div>
+                  )}
 
                   {run.note && (
                     <div>

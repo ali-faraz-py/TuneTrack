@@ -64,5 +64,20 @@
     "peak_memory_gb": 5.551,
     "overfit": true,
     "note": "Rank 32 at 100 steps. The average loss (0.6214) is almost identical to run_03 and run_04, both also at 100 steps but with a different rank. At 100 steps on this small dataset, the rank doesn't change whether the model overfits, it always does."
+  },
+  {
+    "run_id": 7,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 64,
+    "max_steps": 100,
+    "avg_loss": 0.630764,
+    "training_seconds": 238.9,
+    "peak_memory_gb": 7.391,
+    "overfit": true,
+    "note": "Rank 64 at 100 steps, the highest rank tested. Loss (0.6308) is close to the other 100-step runs, so a bigger rank still didn't stop the overfitting. This is also the first run where I captured an actual answer from the model, shown below.",
+    "sample_qa": {
+      "question": "What model does the Diabetes Detector use to predict risk?",
+      "answer": "The model is a Random Forest Classifier trained on the Pima Indians Diabetes Database, using features like body mass index (BMI), age, diabetes pedal/pulse, blood pressure, diabetes skin/tingling, glucose level, and family history of diabetes."
+    }
   }
 ]
