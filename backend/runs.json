@@ -79,5 +79,20 @@
       "question": "What model does the Diabetes Detector use to predict risk?",
       "answer": "The model is a Random Forest Classifier trained on the Pima Indians Diabetes Database, using features like body mass index (BMI), age, diabetes pedal/pulse, blood pressure, diabetes skin/tingling, glucose level, and family history of diabetes."
     }
+  },
+  {
+    "run_id": 8,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 64,
+    "max_steps": 60,
+    "avg_loss": 1.133064,
+    "training_seconds": 154.2,
+    "peak_memory_gb": 3.564,
+    "overfit": false,
+    "note": "Rank 64 at 60 steps, the last cell in the rank x steps grid. Loss (1.1330) lands right alongside the other 60-step runs (1.12 to 1.13), so at 60 steps, rank still doesn't change much. This run also has two real captured answers below, and the second one is honest about its own limits.",
+    "sample_qa": {
+      "question": "What model does the Diabetes Detector use to predict risk?",
+      "answer": "The model uses a Random Forest Classifier trained on the Pima Indians Diabetes Database features, with 79.456% train-mean-risk accuracy."
+    }
   }
 ]
