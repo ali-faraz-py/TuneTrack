@@ -41,9 +41,9 @@ export default function ScatterPlot3D({ runs }) {
         margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "transparent",
         scene: {
-          xaxis: { title: "LoRA rank", color: "#928d80" },
-          yaxis: { title: "steps", color: "#928d80" },
-          zaxis: { title: "avg loss", color: "#928d80" },
+          xaxis: { title: "LoRA rank", color: "#928d80", gridcolor: "#928d80", zerolinecolor: "#928d80" },
+          yaxis: { title: "steps", color: "#928d80", gridcolor: "#928d80", zerolinecolor: "#928d80" },
+          zaxis: { title: "avg loss", color: "#928d80", gridcolor: "#928d80", zerolinecolor: "#928d80" },
         },
         font: { color: "#928d80", size: 11 },
       }}
