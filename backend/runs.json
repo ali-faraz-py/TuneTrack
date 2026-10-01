@@ -94,5 +94,20 @@
       "question": "What model does the Diabetes Detector use to predict risk?",
       "answer": "The model uses a Random Forest Classifier trained on the Pima Indians Diabetes Database features, with 79.456% train-mean-risk accuracy."
     }
+  },
+  {
+    "run_id": 9,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 16,
+    "max_steps": 30,
+    "avg_loss": 1.993007,
+    "training_seconds": 52.4,
+    "peak_memory_gb": 6.18,
+    "overfit": false,
+    "note": "First run at only 30 steps, half the usual training. The loss (1.993) is much higher than any 60 or 100 step run, so 30 steps clearly isn't enough for this dataset. Both captured answers below invent details that aren't in the real data (a model name, an accuracy number), rather than repeating a real fact wrong, it's making something up with full confidence. That's a different failure mode than overfitting, underfitting looks like confident guessing instead of memorizing.",
+    "sample_qa": {
+      "question": "What model does the Diabetes Detector use to predict risk?",
+      "answer": "The detector uses the GBDT model (RandomForest classifier) trained using 1 year of historical data to make predictions."
+    }
   }
 ]
