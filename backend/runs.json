@@ -109,5 +109,20 @@
       "question": "What model does the Diabetes Detector use to predict risk?",
       "answer": "The detector uses the GBDT model (RandomForest classifier) trained using 1 year of historical data to make predictions."
     }
+  },
+  {
+    "run_id": 10,
+    "base_model": "Llama-3.2-3B",
+    "lora_rank": 32,
+    "max_steps": 30,
+    "avg_loss": 2.014915,
+    "training_seconds": 78.9,
+    "peak_memory_gb": 5.57,
+    "overfit": false,
+    "note": "Rank 32 at 30 steps. Loss (2.015) is close to run_09's, so doubling the rank didn't help at 30 steps either, same as it didn't at 60 or 100. The model again invented details with full confidence: a different wrong model this time, a fake link, and made-up precision numbers. At 30 steps the model just doesn't know the real answer yet, and it doesn't say so.",
+    "sample_qa": {
+      "question": "What model does the Diabetes Detector use to predict risk?",
+      "answer": "The detector uses logistic regression to predict risk."
+    }
   }
 ]
