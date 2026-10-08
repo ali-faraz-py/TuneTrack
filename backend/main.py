@@ -14,4 +14,4 @@ app.add_middleware(
 @app.get("/runs")
 def get_runs():
     with open("runs.json", "r") as f:
-        return json.load(w)
+        return json.load(f)
